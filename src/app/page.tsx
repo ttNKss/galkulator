@@ -209,7 +209,7 @@ export default function Home() {
           >
             <AccordionItem value='item-1'>
               <AccordionTrigger>ステータス情報入力</AccordionTrigger>
-              <AccordionContent>
+              <AccordionContent className='px-1'>
                 <div className='space-y-4 justify-items-center flex flex-col items-center'>
                   <div className='max-w-2xl w-full'>
                     <Labeled label='シナリオ'>
