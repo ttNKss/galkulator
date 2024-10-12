@@ -1,5 +1,5 @@
-import { masterLesson, statLimit } from './const'
-import type { Challenge, ParamKeyType, Scenario } from './const'
+import { examRanges, masterLesson, rankThreshold, statLimit } from './const'
+import type { Challenge, ParamKeyType, Rank, Scenario } from './const'
 
 const f = Math.floor
 const s = (v: number[]) => v.reduce((x, y) => x + y)
@@ -33,4 +33,28 @@ export const calc = (
     v += s(tmp.map((v) => f(v * (1 + bonus / 100))))
   }
   return Math.min(statLimit[scenario][stat], v)
+}
+
+export const score = (rank: Rank, vo: number, da: number, vi: number) => {
+  const th = rankThreshold[rank]
+  const statPoint = f((vo + da + vi) * 2.3)
+  const x = th - 1700 - statPoint
+  if (x < 0) return 0
+  let y = 0
+  let sum = 0
+
+  for (const range of examRanges) {
+    const rangeSize = range.max - y
+    const rangePoints = rangeSize * range.rate
+
+    if (x <= sum + rangePoints) {
+      y += Math.ceil((x - sum) / range.rate)
+      return y
+    }
+
+    sum += rangePoints
+    y = range.max
+  }
+
+  return y
 }

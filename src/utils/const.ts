@@ -41,3 +41,20 @@ export const statLimit: Record<Scenario, Params<number>> = {
   pro: { vo: 1500, da: 1500, vi: 1500 },
   master: { vo: 1800, da: 1800, vi: 1800 },
 } as const
+
+export type Rank = 'A+' | 'S' | 'S+' | 'SS'
+export const rankKeys: Rank[] = ['A+', 'S', 'S+', 'SS']
+export const rankThreshold: Record<Rank, number> = {
+  'A+': 11500,
+  S: 13000,
+  'S+': 14500,
+  SS: 16000,
+}
+export const examRanges = [
+  { max: 5000, rate: 0.3 },
+  { max: 10000, rate: 0.15 },
+  { max: 20000, rate: 0.08 },
+  { max: 30000, rate: 0.04 },
+  { max: 40000, rate: 0.02 },
+  { max: Number.POSITIVE_INFINITY, rate: 0.01 },
+]

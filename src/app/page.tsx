@@ -11,9 +11,10 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Labeled } from '@/components/common/labeled'
-import { calc } from '@/utils/func'
+import { calc, score } from '@/utils/func'
 import {
   paramKeys,
+  rankKeys,
   statLimit,
   type Challenge,
   type Params,
@@ -293,46 +294,54 @@ export default function Home() {
                   drive,
                 ),
               }
+              const { vo_result, da_result, vi_result } = {
+                vo_result: Math.min(statLimit[scenario].vo, vo + 30),
+                da_result: Math.min(statLimit[scenario].da, da + 30),
+                vi_result: Math.min(statLimit[scenario].vi, vi + 30),
+              }
               return (
-                <div className="w-full">
-                  {`${v1}-${v2}`}
-                  <div>最終試験前</div>
-                  <div className="flex gap-2">
-                    <div className="flex flex-col gap-1">
-                      <span>Vo</span>
-                      <span>{vo}</span>
+                <>
+                  <div className="w-full">
+                    {`${v1}-${v2}`}
+                    <div>最終試験前</div>
+                    <div className="flex gap-2">
+                      <div className="flex flex-col gap-1">
+                        <span>Vo</span>
+                        <span>{vo}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span>Da</span>
+                        <span>{da}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span>Vi</span>
+                        <span>{vi}</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <span>Da</span>
-                      <span>{da}</span>
+                    {`sum: ${vo + da + vi}`}
+                    <div>最終試験後</div>
+                    <div className="flex gap-2">
+                      <div className="flex flex-col gap-1">
+                        <span>Vo</span>
+                        <span>{vo_result}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span>Da</span>
+                        <span>{da_result}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span>Vi</span>
+                        <span>{vi_result}</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <span>Vi</span>
-                      <span>{vi}</span>
-                    </div>
+                    {`sum: ${vo_result + da_result + vi_result}`}
+                    {rankKeys.map((r) => (
+                      <div>
+                        {r}: {score(r, vo_result, da_result, vi_result)}
+                      </div>
+                    ))}
                   </div>
-                  {`sum: ${vo + da + vi}`}
-                  <div>最終試験後</div>
-                  <div className="flex gap-2">
-                    <div className="flex flex-col gap-1">
-                      <span>Vo</span>
-                      <span>{Math.min(statLimit[scenario].vo, vo + 30)}</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span>Da</span>
-                      <span>{Math.min(statLimit[scenario].da, da + 30)}</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <span>Vi</span>
-                      <span>{Math.min(statLimit[scenario].vi, vi + 30)}</span>
-                    </div>
-                  </div>
-                  {`sum: ${
-                    Math.min(statLimit[scenario].vo, vo + 30) +
-                    Math.min(statLimit[scenario].da, da + 30) +
-                    Math.min(statLimit[scenario].vi, vi + 30)
-                  }`}
-                </div>
+                </>
               )
             })}
           </div>
