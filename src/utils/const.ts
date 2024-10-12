@@ -3,7 +3,11 @@ export type ParamKeyType = keyof Params<any>
 export const paramKeys: ParamKeyType[] = ['Vo', 'Da', 'Vi']
 
 export type Scenario = 'pro' | 'master'
-export type Challenge = { slot1: number; slot2: number; slot3: number }
+export type Challenge = {
+  slot1: number | undefined
+  slot2: number | undefined
+  slot3: number | undefined
+}
 
 export const masterLesson: {
   lesson_4: {

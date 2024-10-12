@@ -30,20 +30,20 @@ import { useEffect, useState } from 'react'
 
 export default function Home() {
   const [scenario, setScenario] = useState<Scenario>('master')
-  const [baseStats, setBaseStats] = useState<Params<number>>({
-    Vo: 0,
-    Da: 0,
-    Vi: 0
+  const [baseStats, setBaseStats] = useState<Params<number | undefined>>({
+    Vo: undefined,
+    Da: undefined,
+    Vi: undefined
   })
-  const [lessonBonus, setLessonBonus] = useState<Params<number>>({
-    Vo: 0,
-    Da: 0,
-    Vi: 0
+  const [lessonBonus, setLessonBonus] = useState<Params<number | undefined>>({
+    Vo: undefined,
+    Da: undefined,
+    Vi: undefined
   })
   const [challenge, setChallenge] = useState<Challenge>({
-    slot1: 0,
-    slot2: 0,
-    slot3: 0
+    slot1: undefined,
+    slot2: undefined,
+    slot3: undefined
   })
 
   useEffect(() => {
@@ -82,23 +82,28 @@ export default function Home() {
   const handleBaseStatsChange = (stat: 'Vo' | 'Da' | 'Vi', value: string) => {
     setBaseStats(prev => ({
       ...prev,
-      [stat]: Math.min(statLimit[scenario][stat], pint(value))
+      [stat]:
+        value === ''
+          ? undefined
+          : Math.min(statLimit[scenario][stat], pint(value))
     }))
-    console.log(pint(value))
   }
 
   const handleLessonBonusChange = (stat: 'Vo' | 'Da' | 'Vi', value: string) => {
     setLessonBonus(prev => ({
       ...prev,
-      [stat]: Math.min(100, pfloat(value))
+      [stat]: value === '' ? undefined : Math.min(100, pfloat(value))
     }))
   }
 
   const handleChallengePChange = (
     slot: 'slot1' | 'slot2' | 'slot3',
-    value: number
+    value: string
   ) => {
-    setChallenge(prev => ({ ...prev, [slot]: value }))
+    setChallenge(prev => ({
+      ...prev,
+      [slot]: value === '' ? undefined : pint(value)
+    }))
   }
 
   const calculateFinalStats = (v1: ParamKeyType, v2: ParamKeyType) => {
@@ -109,9 +114,30 @@ export default function Home() {
     }
     const drive = { stat: v2 }
     const { Vo, Da, Vi } = {
-      Vo: calc(scenario, 'Vo', lessonBonus.Vo, baseStats.Vo, drive, lesson),
-      Da: calc(scenario, 'Da', lessonBonus.Da, baseStats.Da, drive, lesson),
-      Vi: calc(scenario, 'Vi', lessonBonus.Vi, baseStats.Vi, drive, lesson)
+      Vo: calc(
+        scenario,
+        'Vo',
+        lessonBonus.Vo ?? 0,
+        baseStats.Vo ?? 0,
+        drive,
+        lesson
+      ),
+      Da: calc(
+        scenario,
+        'Da',
+        lessonBonus.Da ?? 0,
+        baseStats.Da ?? 0,
+        drive,
+        lesson
+      ),
+      Vi: calc(
+        scenario,
+        'Vi',
+        lessonBonus.Vi ?? 0,
+        baseStats.Vi ?? 0,
+        drive,
+        lesson
+      )
     }
     return {
       last: { Vo, Da, Vi },
@@ -126,9 +152,9 @@ export default function Home() {
   const calculateOnlyDriveStats = (v2: ParamKeyType) => {
     const drive = { stat: v2 }
     const { Vo, Da, Vi } = {
-      Vo: calc(scenario, 'Vo', lessonBonus.Vo, baseStats.Vo, drive),
-      Da: calc(scenario, 'Da', lessonBonus.Da, baseStats.Da, drive),
-      Vi: calc(scenario, 'Vi', lessonBonus.Vi, baseStats.Vi, drive)
+      Vo: calc(scenario, 'Vo', lessonBonus.Vo ?? 0, baseStats.Vo ?? 0, drive),
+      Da: calc(scenario, 'Da', lessonBonus.Da ?? 0, baseStats.Da ?? 0, drive),
+      Vi: calc(scenario, 'Vi', lessonBonus.Vi ?? 0, baseStats.Vi ?? 0, drive)
     }
     return {
       last: { Vo, Da, Vi },
@@ -218,13 +244,15 @@ export default function Home() {
                     </Labeled>
                     <Labeled label='基礎ステータス'>
                       {paramKeys.map(key => (
-                        <div className='flex flex-col gap-1 w-full'>
+                        <div className='flex flex-col gap-1 w-full' id={key}>
                           <span>{key}</span>
                           <Input
                             type='number'
                             min='0'
                             step='1'
-                            value={baseStats[key]}
+                            value={
+                              baseStats[key] === undefined ? '' : baseStats[key]
+                            }
                             onChange={e =>
                               handleBaseStatsChange(key, e.target.value)
                             }
@@ -234,7 +262,7 @@ export default function Home() {
                     </Labeled>
                     <Labeled label='レッスンボーナス'>
                       {paramKeys.map(key => (
-                        <div className='flex flex-col gap-1 w-full'>
+                        <div className='flex flex-col gap-1 w-full' id={key}>
                           <span>{key}</span>
                           <div className='flex items-center'>
                             <Input
@@ -242,7 +270,11 @@ export default function Home() {
                               min='0'
                               max='100'
                               step='0.1'
-                              value={lessonBonus[key]}
+                              value={
+                                lessonBonus[key] === undefined
+                                  ? ''
+                                  : lessonBonus[key]
+                              }
                               onChange={e =>
                                 handleLessonBonusChange(key, e.target.value)
                               }
@@ -254,15 +286,17 @@ export default function Home() {
                     </Labeled>
                     <Labeled label='チャレンジPアイテム'>
                       {(['slot1', 'slot2', 'slot3'] as const).map((key, i) => (
-                        <div className='flex flex-col gap-1 w-full'>
+                        <div className='flex flex-col gap-1 w-full' id={key}>
                           <span>{i + 1}枠目</span>
                           <Input
                             type='number'
                             min='0'
                             step='5'
-                            value={challenge[key]}
+                            value={
+                              challenge[key] === undefined ? '' : challenge[key]
+                            }
                             onChange={e =>
-                              handleChallengePChange(key, pint(e.target.value))
+                              handleChallengePChange(key, e.target.value)
                             }
                           />
                         </div>

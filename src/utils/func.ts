@@ -26,7 +26,10 @@ export const calc = (
       f(tmp[0] * (1 + bonus / 100)) +
       (tmp[1] === 0
         ? 0
-        : f((tmp[1] + s(Object.values(lesson.challenge))) * (1 + bonus / 100)))
+        : f(
+            (tmp[1] + s(Object.values(lesson.challenge).map(v => v ?? 0))) *
+              (1 + bonus / 100)
+          ))
   }
   if (drive) {
     const tmp = masterLesson.drive_2.normal[drive.stat][stat]
