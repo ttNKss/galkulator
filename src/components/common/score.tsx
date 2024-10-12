@@ -1,4 +1,4 @@
-import { rankKeys } from '@/utils/const'
+import { rankKeys, rankThreshold } from '@/utils/const'
 import { score } from '@/utils/func'
 
 interface ScoreProps {
@@ -7,14 +7,27 @@ interface ScoreProps {
 
 const Score: React.FC<ScoreProps> = ({ result: { Vo, Da, Vi } }) => {
   return (
-    <div className='mt-4'>
-      <h4 className='font-semibold mb-2'>スコア</h4>
-      <ul className='space-y-1'>
-        {rankKeys.map(r => (
-          <li key={r}>
-            {r}: {score(r, Vo, Da, Vi)}
-          </li>
-        ))}
+    <div className='mt-4 bg-gray-100 rounded-lg p-4'>
+      <h4 className='font-semibold mb-3 text-lg text-center'>必要スコア</h4>
+      <ul className='space-y-2'>
+        {rankKeys.map(r => {
+          const calculatedScore = score(r, Vo, Da, Vi)
+          const isThresholdMet = calculatedScore >= rankThreshold[r]
+          return (
+            <li key={r} className='flex justify-between items-center'>
+              <span
+                className={`font-medium ${isThresholdMet ? 'text-green-600' : 'text-gray-600'}`}
+              >
+                {r}
+              </span>
+              <span
+                className={`${isThresholdMet ? 'text-green-600 font-bold' : 'text-gray-600'}`}
+              >
+                {calculatedScore.toLocaleString()}
+              </span>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )
