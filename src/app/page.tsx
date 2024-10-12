@@ -3,6 +3,7 @@
 import { Labeled } from '@/components/common/labeled'
 import { Score } from '@/components/common/score'
 import { StatTable } from '@/components/common/statTable'
+import { StatusRanking } from '@/components/common/statusRanking'
 import {
   Accordion,
   AccordionContent,
@@ -14,15 +15,18 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
 import {
   type Challenge,
+  type ParamKeyType,
   type Params,
   type Scenario,
   paramKeys,
   statLimit
 } from '@/utils/const'
 import { calc, pfloat, pint } from '@/utils/func'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { ArrowUpIcon } from '@radix-ui/react-icons'
 
 export default function Home() {
   const [scenario, setScenario] = useState<Scenario>('master')
@@ -41,6 +45,31 @@ export default function Home() {
     slot2: 0,
     slot3: 0
   })
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      if (hash) {
+        const element = document.querySelector(hash)
+        if (element) {
+          const headerHeight =
+            document.querySelector('.fixed')?.clientHeight || 0
+          const elementPosition =
+            element.getBoundingClientRect().top + window.scrollY
+          window.scrollTo({
+            top: elementPosition - headerHeight - 12,
+            behavior: 'smooth'
+          })
+        }
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+    }
+  }, [])
 
   const handleScenarioChange = (scenario: 'pro' | 'master') => {
     if (scenario === 'pro' || scenario === 'master') {
@@ -70,6 +99,76 @@ export default function Home() {
     value: number
   ) => {
     setChallenge(prev => ({ ...prev, [slot]: value }))
+  }
+
+  const calculateFinalStats = (v1: ParamKeyType, v2: ParamKeyType) => {
+    const lesson = {
+      stat: v1,
+      isSP: true,
+      challenge
+    }
+    const drive = { stat: v2 }
+    const { Vo, Da, Vi } = {
+      Vo: calc(scenario, 'Vo', lessonBonus.Vo, baseStats.Vo, drive, lesson),
+      Da: calc(scenario, 'Da', lessonBonus.Da, baseStats.Da, drive, lesson),
+      Vi: calc(scenario, 'Vi', lessonBonus.Vi, baseStats.Vi, drive, lesson)
+    }
+    return {
+      last: { Vo, Da, Vi },
+      result: {
+        Vo: Math.min(statLimit[scenario].Vo, Vo + 30),
+        Da: Math.min(statLimit[scenario].Da, Da + 30),
+        Vi: Math.min(statLimit[scenario].Vi, Vi + 30)
+      }
+    }
+  }
+
+  const calculateOnlyDriveStats = (v2: ParamKeyType) => {
+    const drive = { stat: v2 }
+    const { Vo, Da, Vi } = {
+      Vo: calc(scenario, 'Vo', lessonBonus.Vo, baseStats.Vo, drive),
+      Da: calc(scenario, 'Da', lessonBonus.Da, baseStats.Da, drive),
+      Vi: calc(scenario, 'Vi', lessonBonus.Vi, baseStats.Vi, drive)
+    }
+    return {
+      last: { Vo, Da, Vi },
+      result: {
+        Vo: Math.min(statLimit[scenario].Vo, Vo + 30),
+        Da: Math.min(statLimit[scenario].Da, Da + 30),
+        Vi: Math.min(statLimit[scenario].Vi, Vi + 30)
+      }
+    }
+  }
+
+  const lessonAndDriveCombinations = paramKeys
+    .flatMap(v1 =>
+      paramKeys.map(v2 => {
+        const {
+          last: _,
+          result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
+        } = calculateFinalStats(v1, v2)
+        const total = Vo_result + Da_result + Vi_result
+        return { v1, v2, total }
+      })
+    )
+    .sort((a, b) => b.total - a.total)
+
+  const onlyDriveCombinations = paramKeys
+    .map(v2 => {
+      const {
+        last: _,
+        result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
+      } = calculateOnlyDriveStats(v2)
+      const total = Vo_result + Da_result + Vi_result
+      return { v2, total }
+    })
+    .sort((a, b) => b.total - a.total)
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 
   return (
@@ -173,60 +272,33 @@ export default function Home() {
             </AccordionItem>
           </Accordion>
         </div>
-        <Tabs defaultValue='stats' className='w-full pt-8'>
+        <Tabs defaultValue='lessonAndDrive' className='w-full pt-8'>
           <TabsList className='grid w-full grid-cols-2'>
-            <TabsTrigger value='stats'>ステータス</TabsTrigger>
-            <TabsTrigger value='wip'>WIP</TabsTrigger>
+            <TabsTrigger value='lessonAndDrive'>
+              最終レッスン+追い込み
+            </TabsTrigger>
+            <TabsTrigger value='onlyDrive'>追い込みのみ</TabsTrigger>
           </TabsList>
-          <TabsContent value='stats'>
+          <TabsContent value='lessonAndDrive'>
+            <StatusRanking
+              combinations={lessonAndDriveCombinations}
+              isLessonAndDrive={true}
+            />
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
               {paramKeys.map(v1 =>
                 paramKeys.map(v2 => {
-                  const lesson = {
-                    stat: v1,
-                    isSP: true,
-                    challenge
-                  }
-                  const drive = { stat: v2 }
-                  const { Vo, Da, Vi } = {
-                    Vo: calc(
-                      scenario,
-                      'Vo',
-                      lessonBonus.Vo,
-                      baseStats.Vo,
-                      drive,
-                      lesson
-                    ),
-                    Da: calc(
-                      scenario,
-                      'Da',
-                      lessonBonus.Da,
-                      baseStats.Da,
-                      drive,
-                      lesson
-                    ),
-                    Vi: calc(
-                      scenario,
-                      'Vi',
-                      lessonBonus.Vi,
-                      baseStats.Vi,
-                      drive,
-                      lesson
-                    )
-                  }
-                  const { Vo_result, Da_result, Vi_result } = {
-                    Vo_result: Math.min(statLimit[scenario].Vo, Vo + 30),
-                    Da_result: Math.min(statLimit[scenario].Da, Da + 30),
-                    Vi_result: Math.min(statLimit[scenario].Vi, Vi + 30)
-                  }
+                  const {
+                    last,
+                    result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
+                  } = calculateFinalStats(v1, v2)
                   return (
-                    <Card key={`${v1}-${v2}`}>
+                    <Card key={`${v1}-${v2}`} id={`${v1}-${v2}`}>
                       <CardHeader>
                         <CardTitle>{`${v1}-${v2}`}</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <StatTable
-                          last={{ Vo, Da, Vi }}
+                          last={{ ...last }}
                           result={{
                             Vo: Vo_result,
                             Da: Da_result,
@@ -247,28 +319,25 @@ export default function Home() {
               )}
             </div>
           </TabsContent>
-          <TabsContent value='wip'>
+          <TabsContent value='onlyDrive'>
+            <StatusRanking
+              combinations={onlyDriveCombinations}
+              isLessonAndDrive={false}
+            />
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
               {paramKeys.map(v2 => {
-                const drive = { stat: v2 }
-                const { Vo, Da, Vi } = {
-                  Vo: calc(scenario, 'Vo', lessonBonus.Vo, baseStats.Vo, drive),
-                  Da: calc(scenario, 'Da', lessonBonus.Da, baseStats.Da, drive),
-                  Vi: calc(scenario, 'Vi', lessonBonus.Vi, baseStats.Vi, drive)
-                }
-                const { Vo_result, Da_result, Vi_result } = {
-                  Vo_result: Math.min(statLimit[scenario].Vo, Vo + 30),
-                  Da_result: Math.min(statLimit[scenario].Da, Da + 30),
-                  Vi_result: Math.min(statLimit[scenario].Vi, Vi + 30)
-                }
+                const {
+                  last,
+                  result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
+                } = calculateOnlyDriveStats(v2)
                 return (
-                  <Card key={v2}>
+                  <Card key={v2} id={v2}>
                     <CardHeader>
                       <CardTitle>{v2}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <StatTable
-                        last={{ Vo, Da, Vi }}
+                        last={{ ...last }}
                         result={{ Vo: Vo_result, Da: Da_result, Vi: Vi_result }}
                       />
                       <Score
@@ -286,6 +355,13 @@ export default function Home() {
           </TabsContent>
         </Tabs>
       </main>
+      <Button
+        className='fixed bottom-4 right-4 z-50 rounded-full p-2 h-10 w-10'
+        onClick={scrollToTop}
+        aria-label='トップへ戻る'
+      >
+        <ArrowUpIcon className='h-6 w-6' />
+      </Button>
     </div>
   )
 }
