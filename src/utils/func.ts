@@ -9,13 +9,13 @@ export const calc = (
   stat: ParamKeyType,
   bonus: number,
   base: number,
+  drive?: {
+    stat: ParamKeyType
+  },
   lesson?: {
     stat: ParamKeyType
     isSP: boolean
     challenge: Challenge
-  },
-  drive?: {
-    stat: ParamKeyType
   }
 ) => {
   let v: number = base

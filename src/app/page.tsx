@@ -1,6 +1,8 @@
 'use client'
 
 import { Labeled } from '@/components/common/labeled'
+import { Score } from '@/components/common/score'
+import { StatTable } from '@/components/common/statTable'
 import {
   Accordion,
   AccordionContent,
@@ -11,24 +13,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   type Challenge,
   type Params,
   type Scenario,
   paramKeys,
-  rankKeys,
   statLimit
 } from '@/utils/const'
-import { calc, pfloat, pint, score } from '@/utils/func'
+import { calc, pfloat, pint } from '@/utils/func'
 import { useState } from 'react'
 
 export default function Home() {
@@ -124,150 +117,129 @@ export default function Home() {
                     </RadioGroup>
                   </Labeled>
                   <Labeled label='基礎ステータス'>
-                    <div className='flex-grow'>
-                      <div className='flex gap-2'>
-                        <div className='flex flex-col gap-1'>
-                          <span>Vo</span>
-                          <Input
-                            type='number'
-                            min='0'
-                            step='1'
-                            value={baseStats.vo}
-                            onChange={e =>
-                              handleBaseStatsChange('vo', e.target.value)
-                            }
-                          />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                          <span>Da</span>
-                          <Input
-                            type='number'
-                            min='0'
-                            step='1'
-                            value={baseStats.da}
-                            onChange={e =>
-                              handleBaseStatsChange('da', e.target.value)
-                            }
-                          />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                          <span>Vi</span>
-                          <Input
-                            type='number'
-                            min='0'
-                            step='1'
-                            value={baseStats.vi}
-                            onChange={e =>
-                              handleBaseStatsChange('vi', e.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
+                    <div className='flex flex-col gap-1'>
+                      <span>Vo</span>
+                      <Input
+                        type='number'
+                        min='0'
+                        step='1'
+                        value={baseStats.vo}
+                        onChange={e =>
+                          handleBaseStatsChange('vo', e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                      <span>Da</span>
+                      <Input
+                        type='number'
+                        min='0'
+                        step='1'
+                        value={baseStats.da}
+                        onChange={e =>
+                          handleBaseStatsChange('da', e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                      <span>Vi</span>
+                      <Input
+                        type='number'
+                        min='0'
+                        step='1'
+                        value={baseStats.vi}
+                        onChange={e =>
+                          handleBaseStatsChange('vi', e.target.value)
+                        }
+                      />
                     </div>
                   </Labeled>
                   <Labeled label='レッスンボーナス'>
-                    <div className='flex-grow w-full'>
-                      <div className='flex gap-2'>
-                        <div className='flex flex-col gap-1 w-full'>
-                          <span>Vo</span>
-                          <div className='flex items-center'>
-                            <Input
-                              type='number'
-                              min='0'
-                              max='100'
-                              step='0.1'
-                              value={lessonBonus.vo}
-                              onChange={e =>
-                                handleLessonBonusChange('vo', e.target.value)
-                              }
-                            />
-                            <span className='ml-1'>%</span>
-                          </div>
-                        </div>
-                        <div className='flex flex-col gap-1 w-full'>
-                          <span>Da</span>
-                          <div className='flex items-center'>
-                            <Input
-                              type='number'
-                              min='0'
-                              max='100'
-                              step='0.1'
-                              value={lessonBonus.da}
-                              onChange={e =>
-                                handleLessonBonusChange('da', e.target.value)
-                              }
-                            />
-                            <span className='ml-1'>%</span>
-                          </div>
-                        </div>
-                        <div className='flex flex-col gap-1 w-full'>
-                          <span>Vi</span>
-                          <div className='flex items-center'>
-                            <Input
-                              type='number'
-                              min='0'
-                              max='100'
-                              step='0.1'
-                              value={lessonBonus.vi}
-                              onChange={e =>
-                                handleLessonBonusChange('vi', e.target.value)
-                              }
-                            />
-                            <span className='ml-1'>%</span>
-                          </div>
-                        </div>
+                    <div className='flex flex-col gap-1 w-full'>
+                      <span>Vo</span>
+                      <div className='flex items-center'>
+                        <Input
+                          type='number'
+                          min='0'
+                          max='100'
+                          step='0.1'
+                          value={lessonBonus.vo}
+                          onChange={e =>
+                            handleLessonBonusChange('vo', e.target.value)
+                          }
+                        />
+                        <span className='ml-1'>%</span>
+                      </div>
+                    </div>
+                    <div className='flex flex-col gap-1 w-full'>
+                      <span>Da</span>
+                      <div className='flex items-center'>
+                        <Input
+                          type='number'
+                          min='0'
+                          max='100'
+                          step='0.1'
+                          value={lessonBonus.da}
+                          onChange={e =>
+                            handleLessonBonusChange('da', e.target.value)
+                          }
+                        />
+                        <span className='ml-1'>%</span>
+                      </div>
+                    </div>
+                    <div className='flex flex-col gap-1 w-full'>
+                      <span>Vi</span>
+                      <div className='flex items-center'>
+                        <Input
+                          type='number'
+                          min='0'
+                          max='100'
+                          step='0.1'
+                          value={lessonBonus.vi}
+                          onChange={e =>
+                            handleLessonBonusChange('vi', e.target.value)
+                          }
+                        />
+                        <span className='ml-1'>%</span>
                       </div>
                     </div>
                   </Labeled>
                   <Labeled label='チャレンジPアイテム'>
-                    <div className='flex-grow'>
-                      <div className='flex gap-2'>
-                        <div className='flex flex-col gap-1'>
-                          <span>1枠目</span>
-                          <Input
-                            type='number'
-                            min='0'
-                            step='5'
-                            value={challenge.slot1}
-                            onChange={e =>
-                              handleChallengePChange(
-                                'slot1',
-                                pint(e.target.value)
-                              )
-                            }
-                          />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                          <span>2枠目</span>
-                          <Input
-                            type='number'
-                            min='0'
-                            step='5'
-                            value={challenge.slot2}
-                            onChange={e =>
-                              handleChallengePChange(
-                                'slot2',
-                                pint(e.target.value)
-                              )
-                            }
-                          />
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                          <span>3枠目</span>
-                          <Input
-                            type='number'
-                            min='0'
-                            step='5'
-                            value={challenge.slot3}
-                            onChange={e =>
-                              handleChallengePChange(
-                                'slot3',
-                                pint(e.target.value)
-                              )
-                            }
-                          />
-                        </div>
-                      </div>
+                    <div className='flex flex-col gap-1'>
+                      <span>1枠目</span>
+                      <Input
+                        type='number'
+                        min='0'
+                        step='5'
+                        value={challenge.slot1}
+                        onChange={e =>
+                          handleChallengePChange('slot1', pint(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                      <span>2枠目</span>
+                      <Input
+                        type='number'
+                        min='0'
+                        step='5'
+                        value={challenge.slot2}
+                        onChange={e =>
+                          handleChallengePChange('slot2', pint(e.target.value))
+                        }
+                      />
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                      <span>3枠目</span>
+                      <Input
+                        type='number'
+                        min='0'
+                        step='5'
+                        value={challenge.slot3}
+                        onChange={e =>
+                          handleChallengePChange('slot3', pint(e.target.value))
+                        }
+                      />
                     </div>
                   </Labeled>
                 </div>
@@ -296,24 +268,24 @@ export default function Home() {
                       'vo',
                       lessonBonus.vo,
                       baseStats.vo,
-                      lesson,
-                      drive
+                      drive,
+                      lesson
                     ),
                     da: calc(
                       scenario,
                       'da',
                       lessonBonus.da,
                       baseStats.da,
-                      lesson,
-                      drive
+                      drive,
+                      lesson
                     ),
                     vi: calc(
                       scenario,
                       'vi',
                       lessonBonus.vi,
                       baseStats.vi,
-                      lesson,
-                      drive
+                      drive,
+                      lesson
                     )
                   }
                   const { vo_result, da_result, vi_result } = {
@@ -327,49 +299,21 @@ export default function Home() {
                         <CardTitle>{`${v1}-${v2}`}</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>ステータス</TableHead>
-                              <TableHead>最終試験前</TableHead>
-                              <TableHead>最終試験後</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>Vo</TableCell>
-                              <TableCell>{vo}</TableCell>
-                              <TableCell>{vo_result}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>Da</TableCell>
-                              <TableCell>{da}</TableCell>
-                              <TableCell>{da_result}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>Vi</TableCell>
-                              <TableCell>{vi}</TableCell>
-                              <TableCell>{vi_result}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell>合計</TableCell>
-                              <TableCell>{vo + da + vi}</TableCell>
-                              <TableCell>
-                                {vo_result + da_result + vi_result}
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                        <div className='mt-4'>
-                          <h4 className='font-semibold mb-2'>スコア</h4>
-                          <ul className='space-y-1'>
-                            {rankKeys.map(r => (
-                              <li key={r}>
-                                {r}: {score(r, vo_result, da_result, vi_result)}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        <StatTable
+                          last={{ vo, da, vi }}
+                          result={{
+                            vo: vo_result,
+                            da: da_result,
+                            vi: vi_result
+                          }}
+                        />
+                        <Score
+                          result={{
+                            vo: vo_result,
+                            da: da_result,
+                            vi: vi_result
+                          }}
+                        />
                       </CardContent>
                     </Card>
                   )
@@ -379,7 +323,39 @@ export default function Home() {
           </TabsContent>
           <TabsContent value='wip'>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
-              WIP
+              {paramKeys.map(v2 => {
+                const drive = { stat: v2 }
+                const { vo, da, vi } = {
+                  vo: calc(scenario, 'vo', lessonBonus.vo, baseStats.vo, drive),
+                  da: calc(scenario, 'da', lessonBonus.da, baseStats.da, drive),
+                  vi: calc(scenario, 'vi', lessonBonus.vi, baseStats.vi, drive)
+                }
+                const { vo_result, da_result, vi_result } = {
+                  vo_result: Math.min(statLimit[scenario].vo, vo + 30),
+                  da_result: Math.min(statLimit[scenario].da, da + 30),
+                  vi_result: Math.min(statLimit[scenario].vi, vi + 30)
+                }
+                return (
+                  <Card key={v2}>
+                    <CardHeader>
+                      <CardTitle>{v2}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <StatTable
+                        last={{ vo, da, vi }}
+                        result={{ vo: vo_result, da: da_result, vi: vi_result }}
+                      />
+                      <Score
+                        result={{
+                          vo: vo_result,
+                          da: da_result,
+                          vi: vi_result
+                        }}
+                      />
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
           </TabsContent>
         </Tabs>
