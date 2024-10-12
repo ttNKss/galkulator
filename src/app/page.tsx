@@ -244,7 +244,10 @@ export default function Home() {
                     </Labeled>
                     <Labeled label='基礎ステータス'>
                       {paramKeys.map(key => (
-                        <div className='flex flex-col gap-1 w-full' id={key}>
+                        <div
+                          className='flex flex-col gap-1 w-full'
+                          key={`base-${key}`}
+                        >
                           <span>{key}</span>
                           <Input
                             type='number'
@@ -262,7 +265,10 @@ export default function Home() {
                     </Labeled>
                     <Labeled label='レッスンボーナス'>
                       {paramKeys.map(key => (
-                        <div className='flex flex-col gap-1 w-full' id={key}>
+                        <div
+                          className='flex flex-col gap-1 w-full'
+                          key={`lesson-${key}`}
+                        >
                           <span>{key}</span>
                           <div className='flex items-center'>
                             <Input
@@ -286,7 +292,10 @@ export default function Home() {
                     </Labeled>
                     <Labeled label='チャレンジPアイテム'>
                       {(['slot1', 'slot2', 'slot3'] as const).map((key, i) => (
-                        <div className='flex flex-col gap-1 w-full' id={key}>
+                        <div
+                          className='flex flex-col gap-1 w-full'
+                          key={`challenge-${key}`}
+                        >
                           <span>{i + 1}枠目</span>
                           <Input
                             type='number'
