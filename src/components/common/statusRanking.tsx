@@ -30,17 +30,17 @@ const StatusRanking: React.FC<StatusRankingProps> = ({
               >
                 <span>{`${isLessonAndDrive ? `${v1}-` : ''}${v2}`}</span>
               </a>
-              <div className='flex space-x-4'>
-                <span className='font-bold text-pink-600'>
+              <div className='flex space-x-2 items-center'>
+                <span className='text-sm font-bold text-pink-600'>
                   {Vo.toLocaleString()}
                 </span>
-                <span className='font-bold text-blue-600'>
+                <span className='text-sm font-bold text-blue-600'>
                   {Da.toLocaleString()}
                 </span>
-                <span className='font-bold text-yellow-500'>
+                <span className='text-sm font-bold text-yellow-500'>
                   {Vi.toLocaleString()}
                 </span>
-                <span className='font-bold text-green-600 pl-4'>
+                <span className='font-bold text-green-600 pl-2'>
                   {total.toLocaleString()}
                 </span>
               </div>
