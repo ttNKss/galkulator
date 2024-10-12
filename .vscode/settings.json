@@ -10,9 +10,5 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "cSpell.words": [
-    "galkulator",
-    "shadcn",
-    "tailwindcss"
-  ]
+  "cSpell.words": ["galkulator", "shadcn", "tailwindcss"]
 }

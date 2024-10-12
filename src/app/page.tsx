@@ -10,12 +10,12 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
 import {
   type Challenge,
   type ParamKeyType,
@@ -25,8 +25,8 @@ import {
   statLimit
 } from '@/utils/const'
 import { calc, pfloat, pint } from '@/utils/func'
-import { useState, useEffect } from 'react'
 import { ArrowUpIcon } from '@radix-ui/react-icons'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
   const [scenario, setScenario] = useState<Scenario>('master')
