@@ -16,7 +16,7 @@ export const calc = (
   },
   drive?: {
     stat: ParamKeyType
-  },
+  }
 ) => {
   let v: number = base
   if (lesson) {
@@ -30,7 +30,7 @@ export const calc = (
   }
   if (drive) {
     const tmp = masterLesson.drive_2.normal[drive.stat][stat]
-    v += s(tmp.map((v) => f(v * (1 + bonus / 100))))
+    v += s(tmp.map(v => f(v * (1 + bonus / 100))))
   }
   return Math.min(statLimit[scenario][stat], v)
 }
@@ -57,4 +57,13 @@ export const score = (rank: Rank, vo: number, da: number, vi: number) => {
   }
 
   return y
+}
+
+export const pint = (v: string) => {
+  const n = Number.parseInt(v)
+  return Number.isNaN(n) ? 0 : n
+}
+export const pfloat = (v: string) => {
+  const n = Number.parseFloat(v)
+  return Number.isNaN(n) ? 0 : n
 }
