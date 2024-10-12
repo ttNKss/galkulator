@@ -117,130 +117,56 @@ export default function Home() {
                     </RadioGroup>
                   </Labeled>
                   <Labeled label='基礎ステータス'>
-                    <div className='flex flex-col gap-1'>
-                      <span>Vo</span>
-                      <Input
-                        type='number'
-                        min='0'
-                        step='1'
-                        value={baseStats.Vo}
-                        onChange={e =>
-                          handleBaseStatsChange('Vo', e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <span>Da</span>
-                      <Input
-                        type='number'
-                        min='0'
-                        step='1'
-                        value={baseStats.Da}
-                        onChange={e =>
-                          handleBaseStatsChange('Da', e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <span>Vi</span>
-                      <Input
-                        type='number'
-                        min='0'
-                        step='1'
-                        value={baseStats.Vi}
-                        onChange={e =>
-                          handleBaseStatsChange('Vi', e.target.value)
-                        }
-                      />
-                    </div>
+                    {paramKeys.map(key => (
+                      <div className='flex flex-col gap-1'>
+                        <span>{key}</span>
+                        <Input
+                          type='number'
+                          min='0'
+                          step='1'
+                          value={baseStats[key]}
+                          onChange={e =>
+                            handleBaseStatsChange(key, e.target.value)
+                          }
+                        />
+                      </div>
+                    ))}
                   </Labeled>
                   <Labeled label='レッスンボーナス'>
-                    <div className='flex flex-col gap-1 w-full'>
-                      <span>Vo</span>
-                      <div className='flex items-center'>
-                        <Input
-                          type='number'
-                          min='0'
-                          max='100'
-                          step='0.1'
-                          value={lessonBonus.Vo}
-                          onChange={e =>
-                            handleLessonBonusChange('Vo', e.target.value)
-                          }
-                        />
-                        <span className='ml-1'>%</span>
+                    {paramKeys.map(key => (
+                      <div className='flex flex-col gap-1 w-full'>
+                        <span>{key}</span>
+                        <div className='flex items-center'>
+                          <Input
+                            type='number'
+                            min='0'
+                            max='100'
+                            step='0.1'
+                            value={lessonBonus[key]}
+                            onChange={e =>
+                              handleLessonBonusChange(key, e.target.value)
+                            }
+                          />
+                          <span className='ml-1'>%</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className='flex flex-col gap-1 w-full'>
-                      <span>Da</span>
-                      <div className='flex items-center'>
-                        <Input
-                          type='number'
-                          min='0'
-                          max='100'
-                          step='0.1'
-                          value={lessonBonus.Da}
-                          onChange={e =>
-                            handleLessonBonusChange('Da', e.target.value)
-                          }
-                        />
-                        <span className='ml-1'>%</span>
-                      </div>
-                    </div>
-                    <div className='flex flex-col gap-1 w-full'>
-                      <span>Vi</span>
-                      <div className='flex items-center'>
-                        <Input
-                          type='number'
-                          min='0'
-                          max='100'
-                          step='0.1'
-                          value={lessonBonus.Vi}
-                          onChange={e =>
-                            handleLessonBonusChange('Vi', e.target.value)
-                          }
-                        />
-                        <span className='ml-1'>%</span>
-                      </div>
-                    </div>
+                    ))}
                   </Labeled>
                   <Labeled label='チャレンジPアイテム'>
-                    <div className='flex flex-col gap-1'>
-                      <span>1枠目</span>
-                      <Input
-                        type='number'
-                        min='0'
-                        step='5'
-                        value={challenge.slot1}
-                        onChange={e =>
-                          handleChallengePChange('slot1', pint(e.target.value))
-                        }
-                      />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <span>2枠目</span>
-                      <Input
-                        type='number'
-                        min='0'
-                        step='5'
-                        value={challenge.slot2}
-                        onChange={e =>
-                          handleChallengePChange('slot2', pint(e.target.value))
-                        }
-                      />
-                    </div>
-                    <div className='flex flex-col gap-1'>
-                      <span>3枠目</span>
-                      <Input
-                        type='number'
-                        min='0'
-                        step='5'
-                        value={challenge.slot3}
-                        onChange={e =>
-                          handleChallengePChange('slot3', pint(e.target.value))
-                        }
-                      />
-                    </div>
+                    {(['slot1', 'slot2', 'slot3'] as const).map((key, i) => (
+                      <div className='flex flex-col gap-1'>
+                        <span>{i + 1}枠目</span>
+                        <Input
+                          type='number'
+                          min='0'
+                          step='5'
+                          value={challenge[key]}
+                          onChange={e =>
+                            handleChallengePChange(key, pint(e.target.value))
+                          }
+                        />
+                      </div>
+                    ))}
                   </Labeled>
                 </div>
               </AccordionContent>
