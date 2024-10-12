@@ -275,7 +275,7 @@ export default function Home() {
         <Tabs defaultValue='lessonAndDrive' className='w-full pt-8'>
           <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='lessonAndDrive'>
-              最終レッスン+追い込み
+              最終レッスン + 追い込み
             </TabsTrigger>
             <TabsTrigger value='onlyDrive'>追い込みのみ</TabsTrigger>
           </TabsList>
