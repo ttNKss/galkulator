@@ -1,0 +1,22 @@
+{
+  "name": "galk",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // git
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        // editor
+        "biomejs.biome",
+        "streetsidesoftware.code-spell-checker",
+        "shardulm94.trailing-spaces",
+        // ops
+        "GitHub.vscode-pull-request-github"
+      ]
+    }
+  },
+  "remoteUser": "root",
+  "postCreateCommand": "/bin/sh .devcontainer/postCreateCommand.sh"
+}
