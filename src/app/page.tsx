@@ -82,198 +82,200 @@ export default function Home() {
   return (
     <div className='grid justify-items-center p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
       <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start w-full max-w-4xl'>
-        <Accordion
-          type='single'
-          collapsible
-          className='w-full'
-          defaultValue='item-1'
-        >
-          <AccordionItem value='item-1'>
-            <AccordionTrigger>ステータス情報入力</AccordionTrigger>
-            <AccordionContent>
-              <div className='space-y-4'>
-                <Labeled label='シナリオ'>
-                  <RadioGroup
-                    value={scenario}
-                    onValueChange={handleScenarioChange}
-                    className='w-full'
-                  >
-                    <div className='flex justify-center gap-8 w-full'>
-                      <div className='flex items-center space-x-2'>
-                        <RadioGroupItem
-                          value='pro'
-                          id='pro'
-                          className='w-6 h-6'
-                        />
-                        <Label htmlFor='pro' className='text-base'>
-                          プロ
-                        </Label>
+        <div className='fixed top-0 left-0 right-0 z-50 px-4 bg-white'>
+          <Accordion
+            type='single'
+            collapsible
+            className='w-full'
+            defaultValue='item-1'
+          >
+            <AccordionItem value='item-1'>
+              <AccordionTrigger>ステータス情報入力</AccordionTrigger>
+              <AccordionContent>
+                <div className='space-y-4'>
+                  <Labeled label='シナリオ'>
+                    <RadioGroup
+                      value={scenario}
+                      onValueChange={handleScenarioChange}
+                      className='w-full'
+                    >
+                      <div className='flex justify-center gap-8 w-full'>
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem
+                            value='pro'
+                            id='pro'
+                            className='w-6 h-6'
+                          />
+                          <Label htmlFor='pro' className='text-base'>
+                            プロ
+                          </Label>
+                        </div>
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem
+                            value='master'
+                            id='master'
+                            className='w-6 h-6'
+                          />
+                          <Label htmlFor='master' className='text-base'>
+                            マスター
+                          </Label>
+                        </div>
                       </div>
-                      <div className='flex items-center space-x-2'>
-                        <RadioGroupItem
-                          value='master'
-                          id='master'
-                          className='w-6 h-6'
-                        />
-                        <Label htmlFor='master' className='text-base'>
-                          マスター
-                        </Label>
-                      </div>
-                    </div>
-                  </RadioGroup>
-                </Labeled>
-                <Labeled label='基礎ステータス'>
-                  <div className='flex-grow'>
-                    <div className='flex gap-2'>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vo</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='1'
-                          value={baseStats.vo}
-                          onChange={e =>
-                            handleBaseStatsChange('vo', e.target.value)
-                          }
-                        />
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Da</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='1'
-                          value={baseStats.da}
-                          onChange={e =>
-                            handleBaseStatsChange('da', e.target.value)
-                          }
-                        />
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vi</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='1'
-                          value={baseStats.vi}
-                          onChange={e =>
-                            handleBaseStatsChange('vi', e.target.value)
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </Labeled>
-                <Labeled label='レッスンボーナス'>
-                  <div className='flex-grow'>
-                    <div className='flex gap-2'>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vo</span>
-                        <div className='flex items-center'>
+                    </RadioGroup>
+                  </Labeled>
+                  <Labeled label='基礎ステータス'>
+                    <div className='flex-grow'>
+                      <div className='flex gap-2'>
+                        <div className='flex flex-col gap-1'>
+                          <span>Vo</span>
                           <Input
                             type='number'
                             min='0'
-                            max='100'
-                            step='0.1'
-                            value={lessonBonus.vo}
+                            step='1'
+                            value={baseStats.vo}
                             onChange={e =>
-                              handleLessonBonusChange('vo', e.target.value)
+                              handleBaseStatsChange('vo', e.target.value)
                             }
                           />
-                          <span className='ml-1'>%</span>
                         </div>
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Da</span>
-                        <div className='flex items-center'>
+                        <div className='flex flex-col gap-1'>
+                          <span>Da</span>
                           <Input
                             type='number'
                             min='0'
-                            max='100'
-                            step='0.1'
-                            value={lessonBonus.da}
+                            step='1'
+                            value={baseStats.da}
                             onChange={e =>
-                              handleLessonBonusChange('da', e.target.value)
+                              handleBaseStatsChange('da', e.target.value)
                             }
                           />
-                          <span className='ml-1'>%</span>
                         </div>
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vi</span>
-                        <div className='flex items-center'>
+                        <div className='flex flex-col gap-1'>
+                          <span>Vi</span>
                           <Input
                             type='number'
                             min='0'
-                            max='100'
-                            step='0.1'
-                            value={lessonBonus.vi}
+                            step='1'
+                            value={baseStats.vi}
                             onChange={e =>
-                              handleLessonBonusChange('vi', e.target.value)
+                              handleBaseStatsChange('vi', e.target.value)
                             }
                           />
-                          <span className='ml-1'>%</span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Labeled>
-                <Labeled label='チャレンジPアイテム'>
-                  <div className='flex-grow'>
-                    <div className='flex gap-2'>
-                      <div className='flex flex-col gap-1'>
-                        <span>1枠目</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='5'
-                          value={challenge.slot1}
-                          onChange={e =>
-                            handleChallengePChange(
-                              'slot1',
-                              pint(e.target.value)
-                            )
-                          }
-                        />
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>2枠目</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='5'
-                          value={challenge.slot2}
-                          onChange={e =>
-                            handleChallengePChange(
-                              'slot2',
-                              pint(e.target.value)
-                            )
-                          }
-                        />
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>3枠目</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='5'
-                          value={challenge.slot3}
-                          onChange={e =>
-                            handleChallengePChange(
-                              'slot3',
-                              pint(e.target.value)
-                            )
-                          }
-                        />
+                  </Labeled>
+                  <Labeled label='レッスンボーナス'>
+                    <div className='flex-grow w-full'>
+                      <div className='flex gap-2'>
+                        <div className='flex flex-col gap-1 w-full'>
+                          <span>Vo</span>
+                          <div className='flex items-center'>
+                            <Input
+                              type='number'
+                              min='0'
+                              max='100'
+                              step='0.1'
+                              value={lessonBonus.vo}
+                              onChange={e =>
+                                handleLessonBonusChange('vo', e.target.value)
+                              }
+                            />
+                            <span className='ml-1'>%</span>
+                          </div>
+                        </div>
+                        <div className='flex flex-col gap-1 w-full'>
+                          <span>Da</span>
+                          <div className='flex items-center'>
+                            <Input
+                              type='number'
+                              min='0'
+                              max='100'
+                              step='0.1'
+                              value={lessonBonus.da}
+                              onChange={e =>
+                                handleLessonBonusChange('da', e.target.value)
+                              }
+                            />
+                            <span className='ml-1'>%</span>
+                          </div>
+                        </div>
+                        <div className='flex flex-col gap-1 w-full'>
+                          <span>Vi</span>
+                          <div className='flex items-center'>
+                            <Input
+                              type='number'
+                              min='0'
+                              max='100'
+                              step='0.1'
+                              value={lessonBonus.vi}
+                              onChange={e =>
+                                handleLessonBonusChange('vi', e.target.value)
+                              }
+                            />
+                            <span className='ml-1'>%</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Labeled>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-        <Tabs defaultValue='stats' className='w-full'>
+                  </Labeled>
+                  <Labeled label='チャレンジPアイテム'>
+                    <div className='flex-grow'>
+                      <div className='flex gap-2'>
+                        <div className='flex flex-col gap-1'>
+                          <span>1枠目</span>
+                          <Input
+                            type='number'
+                            min='0'
+                            step='5'
+                            value={challenge.slot1}
+                            onChange={e =>
+                              handleChallengePChange(
+                                'slot1',
+                                pint(e.target.value)
+                              )
+                            }
+                          />
+                        </div>
+                        <div className='flex flex-col gap-1'>
+                          <span>2枠目</span>
+                          <Input
+                            type='number'
+                            min='0'
+                            step='5'
+                            value={challenge.slot2}
+                            onChange={e =>
+                              handleChallengePChange(
+                                'slot2',
+                                pint(e.target.value)
+                              )
+                            }
+                          />
+                        </div>
+                        <div className='flex flex-col gap-1'>
+                          <span>3枠目</span>
+                          <Input
+                            type='number'
+                            min='0'
+                            step='5'
+                            value={challenge.slot3}
+                            onChange={e =>
+                              handleChallengePChange(
+                                'slot3',
+                                pint(e.target.value)
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Labeled>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+        <Tabs defaultValue='stats' className='w-full pt-8'>
           <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='stats'>ステータス</TabsTrigger>
             <TabsTrigger value='wip'>WIP</TabsTrigger>
