@@ -24,7 +24,7 @@ import {
   paramKeys,
   statLimit
 } from '@/utils/const'
-import { calc, pfloat, pint } from '@/utils/func'
+import { calc, pfloat, pint, sum } from '@/utils/func'
 import { ArrowUpIcon } from '@radix-ui/react-icons'
 import { useEffect, useState } from 'react'
 
@@ -169,26 +169,20 @@ export default function Home() {
   const lessonAndDriveCombinations = paramKeys
     .flatMap(v1 =>
       paramKeys.map(v2 => {
-        const {
-          last: _,
-          result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
-        } = calculateFinalStats(v1, v2)
-        const total = Vo_result + Da_result + Vi_result
-        return { v1, v2, total }
+        const { last: _, result } = calculateFinalStats(v1, v2)
+        return { v1, v2, result, total: sum(Object.values(result)) }
       })
     )
     .sort((a, b) => b.total - a.total)
+    .map(x => ({ v1: x.v1, v2: x.v2, result: { ...x.result } }))
 
   const onlyDriveCombinations = paramKeys
     .map(v2 => {
-      const {
-        last: _,
-        result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
-      } = calculateOnlyDriveStats(v2)
-      const total = Vo_result + Da_result + Vi_result
-      return { v2, total }
+      const { last: _, result } = calculateOnlyDriveStats(v2)
+      return { v2, result, total: sum(Object.values(result)) }
     })
     .sort((a, b) => b.total - a.total)
+    .map(x => ({ v2: x.v2, result: { ...x.result } }))
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -318,7 +312,7 @@ export default function Home() {
           </Accordion>
         </div>
         <Tabs defaultValue='lessonAndDrive' className='w-full pt-8'>
-          <TabsList className='grid w-full grid-cols-2'>
+          <TabsList className='grid w-full grid-cols-2 mb-2'>
             <TabsTrigger value='lessonAndDrive'>
               レッスン + 追い込み
             </TabsTrigger>
@@ -326,7 +320,7 @@ export default function Home() {
           </TabsList>
           <TabsContent
             value='lessonAndDrive'
-            className='flex flex-col items-center gap-8'
+            className='flex flex-col items-center gap-4 mt-0'
           >
             <StatusRanking
               combinations={lessonAndDriveCombinations}
@@ -369,13 +363,13 @@ export default function Home() {
           </TabsContent>
           <TabsContent
             value='onlyDrive'
-            className='flex flex-col items-center gap-8'
+            className='flex flex-col items-center gap-4 mt-0'
           >
             <StatusRanking
               combinations={onlyDriveCombinations}
               isLessonAndDrive={false}
             />
-            <div className='grid gap-4 w-full'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
               {paramKeys.map(v2 => {
                 const {
                   last,
