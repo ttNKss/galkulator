@@ -35,9 +35,9 @@ export const calc = (
   return Math.min(statLimit[scenario][stat], v)
 }
 
-export const score = (rank: Rank, vo: number, da: number, vi: number) => {
+export const score = (rank: Rank, Vo: number, Da: number, Vi: number) => {
   const th = rankThreshold[rank]
-  const statPoint = f((vo + da + vi) * 2.3)
+  const statPoint = f((Vo + Da + Vi) * 2.3)
   const x = th - 1700 - statPoint
   if (x < 0) return 0
   let y = 0

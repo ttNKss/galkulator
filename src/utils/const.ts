@@ -1,6 +1,6 @@
-export type Params<T> = { vo: T; da: T; vi: T }
+export type Params<T> = { Vo: T; Da: T; Vi: T }
 export type ParamKeyType = keyof Params<any>
-export const paramKeys: ParamKeyType[] = ['vo', 'da', 'vi']
+export const paramKeys: ParamKeyType[] = ['Vo', 'Da', 'Vi']
 
 export type Scenario = 'pro' | 'master'
 export type Challenge = { slot1: number; slot2: number; slot3: number }
@@ -16,30 +16,30 @@ export const masterLesson: {
 } = {
   lesson_4: {
     normal: {
-      vo: { vo: [75, 75], da: [0, 0], vi: [0, 0] },
-      da: { vo: [0, 0], da: [75, 75], vi: [0, 0] },
-      vi: { vo: [0, 0], da: [0, 0], vi: [75, 75] }
+      Vo: { Vo: [75, 75], Da: [0, 0], Vi: [0, 0] },
+      Da: { Vo: [0, 0], Da: [75, 75], Vi: [0, 0] },
+      Vi: { Vo: [0, 0], Da: [0, 0], Vi: [75, 75] }
     },
     sp: {
-      vo: { vo: [110, 110], da: [0, 0], vi: [0, 0] },
-      da: { vo: [0, 0], da: [110, 110], vi: [0, 0] },
-      vi: { vo: [0, 0], da: [0, 0], vi: [110, 110] }
+      Vo: { Vo: [110, 110], Da: [0, 0], Vi: [0, 0] },
+      Da: { Vo: [0, 0], Da: [110, 110], Vi: [0, 0] },
+      Vi: { Vo: [0, 0], Da: [0, 0], Vi: [110, 110] }
     }
   },
   drive_2: {
     normal: {
-      vo: { vo: [165, 145], da: [0, 145], vi: [0, 145] },
-      da: { vo: [0, 145], da: [165, 145], vi: [0, 145] },
-      vi: { vo: [0, 145], da: [0, 145], vi: [165, 145] }
+      Vo: { Vo: [165, 145], Da: [0, 145], Vi: [0, 145] },
+      Da: { Vo: [0, 145], Da: [165, 145], Vi: [0, 145] },
+      Vi: { Vo: [0, 145], Da: [0, 145], Vi: [165, 145] }
     }
   }
 } as const
 
-export const examStats: Params<number> = { vo: 30, da: 30, vi: 30 } as const
+export const examStats: Params<number> = { Vo: 30, Da: 30, Vi: 30 } as const
 
 export const statLimit: Record<Scenario, Params<number>> = {
-  pro: { vo: 1500, da: 1500, vi: 1500 },
-  master: { vo: 1800, da: 1800, vi: 1800 }
+  pro: { Vo: 1500, Da: 1500, Vi: 1500 },
+  master: { Vo: 1800, Da: 1800, Vi: 1800 }
 } as const
 
 export type Rank = 'A+' | 'S' | 'S+' | 'SS'

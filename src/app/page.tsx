@@ -27,14 +27,14 @@ import { useState } from 'react'
 export default function Home() {
   const [scenario, setScenario] = useState<Scenario>('master')
   const [baseStats, setBaseStats] = useState<Params<number>>({
-    vo: 0,
-    da: 0,
-    vi: 0
+    Vo: 0,
+    Da: 0,
+    Vi: 0
   })
   const [lessonBonus, setLessonBonus] = useState<Params<number>>({
-    vo: 0,
-    da: 0,
-    vi: 0
+    Vo: 0,
+    Da: 0,
+    Vi: 0
   })
   const [challenge, setChallenge] = useState<Challenge>({
     slot1: 0,
@@ -50,7 +50,7 @@ export default function Home() {
     }
   }
 
-  const handleBaseStatsChange = (stat: 'vo' | 'da' | 'vi', value: string) => {
+  const handleBaseStatsChange = (stat: 'Vo' | 'Da' | 'Vi', value: string) => {
     setBaseStats(prev => ({
       ...prev,
       [stat]: Math.min(statLimit[scenario][stat], pint(value))
@@ -58,7 +58,7 @@ export default function Home() {
     console.log(pint(value))
   }
 
-  const handleLessonBonusChange = (stat: 'vo' | 'da' | 'vi', value: string) => {
+  const handleLessonBonusChange = (stat: 'Vo' | 'Da' | 'Vi', value: string) => {
     setLessonBonus(prev => ({
       ...prev,
       [stat]: Math.min(100, pfloat(value))
@@ -123,9 +123,9 @@ export default function Home() {
                         type='number'
                         min='0'
                         step='1'
-                        value={baseStats.vo}
+                        value={baseStats.Vo}
                         onChange={e =>
-                          handleBaseStatsChange('vo', e.target.value)
+                          handleBaseStatsChange('Vo', e.target.value)
                         }
                       />
                     </div>
@@ -135,9 +135,9 @@ export default function Home() {
                         type='number'
                         min='0'
                         step='1'
-                        value={baseStats.da}
+                        value={baseStats.Da}
                         onChange={e =>
-                          handleBaseStatsChange('da', e.target.value)
+                          handleBaseStatsChange('Da', e.target.value)
                         }
                       />
                     </div>
@@ -147,9 +147,9 @@ export default function Home() {
                         type='number'
                         min='0'
                         step='1'
-                        value={baseStats.vi}
+                        value={baseStats.Vi}
                         onChange={e =>
-                          handleBaseStatsChange('vi', e.target.value)
+                          handleBaseStatsChange('Vi', e.target.value)
                         }
                       />
                     </div>
@@ -163,9 +163,9 @@ export default function Home() {
                           min='0'
                           max='100'
                           step='0.1'
-                          value={lessonBonus.vo}
+                          value={lessonBonus.Vo}
                           onChange={e =>
-                            handleLessonBonusChange('vo', e.target.value)
+                            handleLessonBonusChange('Vo', e.target.value)
                           }
                         />
                         <span className='ml-1'>%</span>
@@ -179,9 +179,9 @@ export default function Home() {
                           min='0'
                           max='100'
                           step='0.1'
-                          value={lessonBonus.da}
+                          value={lessonBonus.Da}
                           onChange={e =>
-                            handleLessonBonusChange('da', e.target.value)
+                            handleLessonBonusChange('Da', e.target.value)
                           }
                         />
                         <span className='ml-1'>%</span>
@@ -195,9 +195,9 @@ export default function Home() {
                           min='0'
                           max='100'
                           step='0.1'
-                          value={lessonBonus.vi}
+                          value={lessonBonus.Vi}
                           onChange={e =>
-                            handleLessonBonusChange('vi', e.target.value)
+                            handleLessonBonusChange('Vi', e.target.value)
                           }
                         />
                         <span className='ml-1'>%</span>
@@ -262,36 +262,36 @@ export default function Home() {
                     challenge
                   }
                   const drive = { stat: v2 }
-                  const { vo, da, vi } = {
-                    vo: calc(
+                  const { Vo, Da, Vi } = {
+                    Vo: calc(
                       scenario,
-                      'vo',
-                      lessonBonus.vo,
-                      baseStats.vo,
+                      'Vo',
+                      lessonBonus.Vo,
+                      baseStats.Vo,
                       drive,
                       lesson
                     ),
-                    da: calc(
+                    Da: calc(
                       scenario,
-                      'da',
-                      lessonBonus.da,
-                      baseStats.da,
+                      'Da',
+                      lessonBonus.Da,
+                      baseStats.Da,
                       drive,
                       lesson
                     ),
-                    vi: calc(
+                    Vi: calc(
                       scenario,
-                      'vi',
-                      lessonBonus.vi,
-                      baseStats.vi,
+                      'Vi',
+                      lessonBonus.Vi,
+                      baseStats.Vi,
                       drive,
                       lesson
                     )
                   }
-                  const { vo_result, da_result, vi_result } = {
-                    vo_result: Math.min(statLimit[scenario].vo, vo + 30),
-                    da_result: Math.min(statLimit[scenario].da, da + 30),
-                    vi_result: Math.min(statLimit[scenario].vi, vi + 30)
+                  const { Vo_result, Da_result, Vi_result } = {
+                    Vo_result: Math.min(statLimit[scenario].Vo, Vo + 30),
+                    Da_result: Math.min(statLimit[scenario].Da, Da + 30),
+                    Vi_result: Math.min(statLimit[scenario].Vi, Vi + 30)
                   }
                   return (
                     <Card key={`${v1}-${v2}`}>
@@ -300,18 +300,18 @@ export default function Home() {
                       </CardHeader>
                       <CardContent>
                         <StatTable
-                          last={{ vo, da, vi }}
+                          last={{ Vo, Da, Vi }}
                           result={{
-                            vo: vo_result,
-                            da: da_result,
-                            vi: vi_result
+                            Vo: Vo_result,
+                            Da: Da_result,
+                            Vi: Vi_result
                           }}
                         />
                         <Score
                           result={{
-                            vo: vo_result,
-                            da: da_result,
-                            vi: vi_result
+                            Vo: Vo_result,
+                            Da: Da_result,
+                            Vi: Vi_result
                           }}
                         />
                       </CardContent>
@@ -325,15 +325,15 @@ export default function Home() {
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
               {paramKeys.map(v2 => {
                 const drive = { stat: v2 }
-                const { vo, da, vi } = {
-                  vo: calc(scenario, 'vo', lessonBonus.vo, baseStats.vo, drive),
-                  da: calc(scenario, 'da', lessonBonus.da, baseStats.da, drive),
-                  vi: calc(scenario, 'vi', lessonBonus.vi, baseStats.vi, drive)
+                const { Vo, Da, Vi } = {
+                  Vo: calc(scenario, 'Vo', lessonBonus.Vo, baseStats.Vo, drive),
+                  Da: calc(scenario, 'Da', lessonBonus.Da, baseStats.Da, drive),
+                  Vi: calc(scenario, 'Vi', lessonBonus.Vi, baseStats.Vi, drive)
                 }
-                const { vo_result, da_result, vi_result } = {
-                  vo_result: Math.min(statLimit[scenario].vo, vo + 30),
-                  da_result: Math.min(statLimit[scenario].da, da + 30),
-                  vi_result: Math.min(statLimit[scenario].vi, vi + 30)
+                const { Vo_result, Da_result, Vi_result } = {
+                  Vo_result: Math.min(statLimit[scenario].Vo, Vo + 30),
+                  Da_result: Math.min(statLimit[scenario].Da, Da + 30),
+                  Vi_result: Math.min(statLimit[scenario].Vi, Vi + 30)
                 }
                 return (
                   <Card key={v2}>
@@ -342,14 +342,14 @@ export default function Home() {
                     </CardHeader>
                     <CardContent>
                       <StatTable
-                        last={{ vo, da, vi }}
-                        result={{ vo: vo_result, da: da_result, vi: vi_result }}
+                        last={{ Vo, Da, Vi }}
+                        result={{ Vo: Vo_result, Da: Da_result, Vi: Vi_result }}
                       />
                       <Score
                         result={{
-                          vo: vo_result,
-                          da: da_result,
-                          vi: vi_result
+                          Vo: Vo_result,
+                          Da: Da_result,
+                          Vi: Vi_result
                         }}
                       />
                     </CardContent>

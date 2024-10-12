@@ -8,13 +8,13 @@ import {
 } from '@/components/ui/table'
 
 interface StatTableProps {
-  last: { vo: number; da: number; vi: number }
-  result: { vo: number; da: number; vi: number }
+  last: { Vo: number; Da: number; Vi: number }
+  result: { Vo: number; Da: number; Vi: number }
 }
 
 const StatTable: React.FC<StatTableProps> = ({
-  last: { vo, da, vi },
-  result: { vo: vo_result, da: da_result, vi: vi_result }
+  last: { Vo, Da, Vi },
+  result: { Vo: Vo_result, Da: Da_result, Vi: Vi_result }
 }) => {
   return (
     <Table>
@@ -28,23 +28,23 @@ const StatTable: React.FC<StatTableProps> = ({
       <TableBody>
         <TableRow>
           <TableCell>Vo</TableCell>
-          <TableCell>{vo}</TableCell>
-          <TableCell>{vo_result}</TableCell>
+          <TableCell>{Vo}</TableCell>
+          <TableCell>{Vo_result}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>Da</TableCell>
-          <TableCell>{da}</TableCell>
-          <TableCell>{da_result}</TableCell>
+          <TableCell>{Da}</TableCell>
+          <TableCell>{Da_result}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>Vi</TableCell>
-          <TableCell>{vi}</TableCell>
-          <TableCell>{vi_result}</TableCell>
+          <TableCell>{Vi}</TableCell>
+          <TableCell>{Vi_result}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>合計</TableCell>
-          <TableCell>{vo + da + vi}</TableCell>
-          <TableCell>{vo_result + da_result + vi_result}</TableCell>
+          <TableCell>{Vo + Da + Vi}</TableCell>
+          <TableCell>{Vo_result + Da_result + Vi_result}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
