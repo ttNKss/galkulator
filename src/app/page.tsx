@@ -7,9 +7,19 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   type Challenge,
   type Params,
@@ -70,8 +80,8 @@ export default function Home() {
   }
 
   return (
-    <div className='grid items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
-      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start w-full max-w-md'>
+    <div className='grid justify-items-center p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
+      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start w-full max-w-4xl'>
         <Accordion
           type='single'
           collapsible
@@ -263,93 +273,114 @@ export default function Home() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        {paramKeys.map(v1 => (
-          <div className='flex flex-grow gap-2 w-full'>
-            {paramKeys.map(v2 => {
-              const lesson = {
-                stat: v1,
-                isSP: true,
-                challenge
-              }
-              const drive = { stat: v2 }
-              const { vo, da, vi } = {
-                vo: calc(
-                  scenario,
-                  'vo',
-                  lessonBonus.vo,
-                  baseStats.vo,
-                  lesson,
-                  drive
-                ),
-                da: calc(
-                  scenario,
-                  'da',
-                  lessonBonus.da,
-                  baseStats.da,
-                  lesson,
-                  drive
-                ),
-                vi: calc(
-                  scenario,
-                  'vi',
-                  lessonBonus.vi,
-                  baseStats.vi,
-                  lesson,
-                  drive
-                )
-              }
-              const { vo_result, da_result, vi_result } = {
-                vo_result: Math.min(statLimit[scenario].vo, vo + 30),
-                da_result: Math.min(statLimit[scenario].da, da + 30),
-                vi_result: Math.min(statLimit[scenario].vi, vi + 30)
-              }
-              return (
-                <>
-                  <div className='w-full'>
-                    {`${v1}-${v2}`}
-                    <div>最終試験前</div>
-                    <div className='flex gap-2'>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vo</span>
-                        <span>{vo}</span>
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Da</span>
-                        <span>{da}</span>
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vi</span>
-                        <span>{vi}</span>
-                      </div>
-                    </div>
-                    {`sum: ${vo + da + vi}`}
-                    <div>最終試験後</div>
-                    <div className='flex gap-2'>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vo</span>
-                        <span>{vo_result}</span>
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Da</span>
-                        <span>{da_result}</span>
-                      </div>
-                      <div className='flex flex-col gap-1'>
-                        <span>Vi</span>
-                        <span>{vi_result}</span>
-                      </div>
-                    </div>
-                    {`sum: ${vo_result + da_result + vi_result}`}
-                    {rankKeys.map(r => (
-                      <div>
-                        {r}: {score(r, vo_result, da_result, vi_result)}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )
-            })}
-          </div>
-        ))}
+        <Tabs defaultValue='stats' className='w-full'>
+          <TabsList className='grid w-full grid-cols-2'>
+            <TabsTrigger value='stats'>ステータス</TabsTrigger>
+            <TabsTrigger value='wip'>WIP</TabsTrigger>
+          </TabsList>
+          <TabsContent value='stats'>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
+              {paramKeys.map(v1 =>
+                paramKeys.map(v2 => {
+                  const lesson = {
+                    stat: v1,
+                    isSP: true,
+                    challenge
+                  }
+                  const drive = { stat: v2 }
+                  const { vo, da, vi } = {
+                    vo: calc(
+                      scenario,
+                      'vo',
+                      lessonBonus.vo,
+                      baseStats.vo,
+                      lesson,
+                      drive
+                    ),
+                    da: calc(
+                      scenario,
+                      'da',
+                      lessonBonus.da,
+                      baseStats.da,
+                      lesson,
+                      drive
+                    ),
+                    vi: calc(
+                      scenario,
+                      'vi',
+                      lessonBonus.vi,
+                      baseStats.vi,
+                      lesson,
+                      drive
+                    )
+                  }
+                  const { vo_result, da_result, vi_result } = {
+                    vo_result: Math.min(statLimit[scenario].vo, vo + 30),
+                    da_result: Math.min(statLimit[scenario].da, da + 30),
+                    vi_result: Math.min(statLimit[scenario].vi, vi + 30)
+                  }
+                  return (
+                    <Card key={`${v1}-${v2}`}>
+                      <CardHeader>
+                        <CardTitle>{`${v1}-${v2}`}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>ステータス</TableHead>
+                              <TableHead>最終試験前</TableHead>
+                              <TableHead>最終試験後</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>Vo</TableCell>
+                              <TableCell>{vo}</TableCell>
+                              <TableCell>{vo_result}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Da</TableCell>
+                              <TableCell>{da}</TableCell>
+                              <TableCell>{da_result}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Vi</TableCell>
+                              <TableCell>{vi}</TableCell>
+                              <TableCell>{vi_result}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>合計</TableCell>
+                              <TableCell>{vo + da + vi}</TableCell>
+                              <TableCell>
+                                {vo_result + da_result + vi_result}
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                        <div className='mt-4'>
+                          <h4 className='font-semibold mb-2'>スコア</h4>
+                          <ul className='space-y-1'>
+                            {rankKeys.map(r => (
+                              <li key={r}>
+                                {r}: {score(r, vo_result, da_result, vi_result)}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })
+              )}
+            </div>
+          </TabsContent>
+          <TabsContent value='wip'>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
+              WIP
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   )
