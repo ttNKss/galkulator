@@ -172,8 +172,8 @@ export default function Home() {
   }
 
   return (
-    <div className='grid justify-items-center p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
-      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start w-full max-w-4xl'>
+    <div className='grid justify-items-center py-8 pb-20 px-8 sm:px-20 font-[family-name:var(--font-geist-sans)]'>
+      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start w-full max-w-5xl'>
         <div className='fixed top-0 left-0 right-0 z-50 px-4 bg-white'>
           <Accordion
             type='single'
@@ -184,89 +184,91 @@ export default function Home() {
             <AccordionItem value='item-1'>
               <AccordionTrigger>ステータス情報入力</AccordionTrigger>
               <AccordionContent>
-                <div className='space-y-4'>
-                  <Labeled label='シナリオ'>
-                    <RadioGroup
-                      value={scenario}
-                      onValueChange={handleScenarioChange}
-                      className='w-full'
-                    >
-                      <div className='flex justify-center gap-8 w-full'>
-                        <div className='flex items-center space-x-2'>
-                          <RadioGroupItem
-                            value='pro'
-                            id='pro'
-                            className='w-6 h-6'
-                          />
-                          <Label htmlFor='pro' className='text-base'>
-                            プロ
-                          </Label>
+                <div className='space-y-4 justify-items-center flex flex-col items-center'>
+                  <div className='max-w-2xl w-full'>
+                    <Labeled label='シナリオ'>
+                      <RadioGroup
+                        value={scenario}
+                        onValueChange={handleScenarioChange}
+                        className='w-full'
+                      >
+                        <div className='flex justify-center gap-8 w-full'>
+                          <div className='flex items-center space-x-2'>
+                            <RadioGroupItem
+                              value='pro'
+                              id='pro'
+                              className='w-6 h-6'
+                            />
+                            <Label htmlFor='pro' className='text-base'>
+                              プロ
+                            </Label>
+                          </div>
+                          <div className='flex items-center space-x-2'>
+                            <RadioGroupItem
+                              value='master'
+                              id='master'
+                              className='w-6 h-6'
+                            />
+                            <Label htmlFor='master' className='text-base'>
+                              マスター
+                            </Label>
+                          </div>
                         </div>
-                        <div className='flex items-center space-x-2'>
-                          <RadioGroupItem
-                            value='master'
-                            id='master'
-                            className='w-6 h-6'
-                          />
-                          <Label htmlFor='master' className='text-base'>
-                            マスター
-                          </Label>
-                        </div>
-                      </div>
-                    </RadioGroup>
-                  </Labeled>
-                  <Labeled label='基礎ステータス'>
-                    {paramKeys.map(key => (
-                      <div className='flex flex-col gap-1'>
-                        <span>{key}</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='1'
-                          value={baseStats[key]}
-                          onChange={e =>
-                            handleBaseStatsChange(key, e.target.value)
-                          }
-                        />
-                      </div>
-                    ))}
-                  </Labeled>
-                  <Labeled label='レッスンボーナス'>
-                    {paramKeys.map(key => (
-                      <div className='flex flex-col gap-1 w-full'>
-                        <span>{key}</span>
-                        <div className='flex items-center'>
+                      </RadioGroup>
+                    </Labeled>
+                    <Labeled label='基礎ステータス'>
+                      {paramKeys.map(key => (
+                        <div className='flex flex-col gap-1 w-full'>
+                          <span>{key}</span>
                           <Input
                             type='number'
                             min='0'
-                            max='100'
-                            step='0.1'
-                            value={lessonBonus[key]}
+                            step='1'
+                            value={baseStats[key]}
                             onChange={e =>
-                              handleLessonBonusChange(key, e.target.value)
+                              handleBaseStatsChange(key, e.target.value)
                             }
                           />
-                          <span className='ml-1'>%</span>
                         </div>
-                      </div>
-                    ))}
-                  </Labeled>
-                  <Labeled label='チャレンジPアイテム'>
-                    {(['slot1', 'slot2', 'slot3'] as const).map((key, i) => (
-                      <div className='flex flex-col gap-1'>
-                        <span>{i + 1}枠目</span>
-                        <Input
-                          type='number'
-                          min='0'
-                          step='5'
-                          value={challenge[key]}
-                          onChange={e =>
-                            handleChallengePChange(key, pint(e.target.value))
-                          }
-                        />
-                      </div>
-                    ))}
-                  </Labeled>
+                      ))}
+                    </Labeled>
+                    <Labeled label='レッスンボーナス'>
+                      {paramKeys.map(key => (
+                        <div className='flex flex-col gap-1 w-full'>
+                          <span>{key}</span>
+                          <div className='flex items-center'>
+                            <Input
+                              type='number'
+                              min='0'
+                              max='100'
+                              step='0.1'
+                              value={lessonBonus[key]}
+                              onChange={e =>
+                                handleLessonBonusChange(key, e.target.value)
+                              }
+                            />
+                            <span className='ml-1'>%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </Labeled>
+                    <Labeled label='チャレンジPアイテム'>
+                      {(['slot1', 'slot2', 'slot3'] as const).map((key, i) => (
+                        <div className='flex flex-col gap-1 w-full'>
+                          <span>{i + 1}枠目</span>
+                          <Input
+                            type='number'
+                            min='0'
+                            step='5'
+                            value={challenge[key]}
+                            onChange={e =>
+                              handleChallengePChange(key, pint(e.target.value))
+                            }
+                          />
+                        </div>
+                      ))}
+                    </Labeled>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -275,16 +277,19 @@ export default function Home() {
         <Tabs defaultValue='lessonAndDrive' className='w-full pt-8'>
           <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='lessonAndDrive'>
-              最終レッスン + 追い込み
+              レッスン + 追い込み
             </TabsTrigger>
             <TabsTrigger value='onlyDrive'>追い込みのみ</TabsTrigger>
           </TabsList>
-          <TabsContent value='lessonAndDrive'>
+          <TabsContent
+            value='lessonAndDrive'
+            className='flex flex-col items-center gap-8'
+          >
             <StatusRanking
               combinations={lessonAndDriveCombinations}
               isLessonAndDrive={true}
             />
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
               {paramKeys.map(v1 =>
                 paramKeys.map(v2 => {
                   const {
@@ -319,12 +324,15 @@ export default function Home() {
               )}
             </div>
           </TabsContent>
-          <TabsContent value='onlyDrive'>
+          <TabsContent
+            value='onlyDrive'
+            className='flex flex-col items-center gap-8'
+          >
             <StatusRanking
               combinations={onlyDriveCombinations}
               isLessonAndDrive={false}
             />
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 w-full'>
+            <div className='grid gap-4 w-full'>
               {paramKeys.map(v2 => {
                 const {
                   last,

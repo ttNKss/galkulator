@@ -7,9 +7,9 @@ const StatusRanking: React.FC<StatusRankingProps> = ({
   combinations,
   isLessonAndDrive
 }) => (
-  <div className='mt-8 mb-8 bg-gray-100 rounded-lg p-6 shadow-md'>
+  <div className='bg-gray-100 rounded-lg p-6 shadow-md max-w-2xl w-full'>
     <h3 className='font-bold text-xl mb-4 text-center text-gray-800'>
-      最終試験後のステータス合計順
+      ステータス合計順
     </h3>
     <ol className='list-decimal list-outside space-y-2 pl-6'>
       {combinations.map(({ v1, v2, total }, index) => (
