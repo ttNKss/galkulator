@@ -11,12 +11,32 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Labeled } from '@/components/common/labeled'
+import { calc } from '@/utils/func'
+import {
+  paramKeys,
+  statLimit,
+  type Challenge,
+  type Params,
+  type Scenario,
+} from '@/utils/const'
 
 export default function Home() {
-  const [scenario, setScenario] = useState<'pro' | 'master'>('master')
-  const [baseStats, setBaseStats] = useState({ vo: 0, da: 0, vi: 0 })
-  const [lessonBonus, setLessonBonus] = useState({ vo: 0, da: 0, vi: 0 })
-  const [challenge, setChallenge] = useState({ slot1: 0, slot2: 0, slot3: 0 })
+  const [scenario, setScenario] = useState<Scenario>('master')
+  const [baseStats, setBaseStats] = useState<Params<number>>({
+    vo: 0,
+    da: 0,
+    vi: 0,
+  })
+  const [lessonBonus, setLessonBonus] = useState<Params<number>>({
+    vo: 0,
+    da: 0,
+    vi: 0,
+  })
+  const [challenge, setChallenge] = useState<Challenge>({
+    slot1: 0,
+    slot2: 0,
+    slot3: 0,
+  })
 
   const handleScenarioChange = (scenario: 'pro' | 'master') => {
     if (scenario === 'pro' || scenario === 'master') {
@@ -238,6 +258,85 @@ export default function Home() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        {paramKeys.map((v1) => (
+          <div className="flex flex-grow gap-2 w-full">
+            {paramKeys.map((v2) => {
+              const lesson = {
+                stat: v1,
+                isSP: true,
+                challenge,
+              }
+              const drive = { stat: v2 }
+              const { vo, da, vi } = {
+                vo: calc(
+                  scenario,
+                  'vo',
+                  lessonBonus.vo,
+                  baseStats.vo,
+                  lesson,
+                  drive,
+                ),
+                da: calc(
+                  scenario,
+                  'da',
+                  lessonBonus.da,
+                  baseStats.da,
+                  lesson,
+                  drive,
+                ),
+                vi: calc(
+                  scenario,
+                  'vi',
+                  lessonBonus.vi,
+                  baseStats.vi,
+                  lesson,
+                  drive,
+                ),
+              }
+              return (
+                <div className="w-full">
+                  {`${v1}-${v2}`}
+                  <div>最終試験前</div>
+                  <div className="flex gap-2">
+                    <div className="flex flex-col gap-1">
+                      <span>Vo</span>
+                      <span>{vo}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span>Da</span>
+                      <span>{da}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span>Vi</span>
+                      <span>{vi}</span>
+                    </div>
+                  </div>
+                  {`sum: ${vo + da + vi}`}
+                  <div>最終試験後</div>
+                  <div className="flex gap-2">
+                    <div className="flex flex-col gap-1">
+                      <span>Vo</span>
+                      <span>{Math.min(statLimit[scenario].vo, vo + 30)}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span>Da</span>
+                      <span>{Math.min(statLimit[scenario].da, da + 30)}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span>Vi</span>
+                      <span>{Math.min(statLimit[scenario].vi, vi + 30)}</span>
+                    </div>
+                  </div>
+                  {`sum: ${
+                    Math.min(statLimit[scenario].vo, vo + 30) +
+                    Math.min(statLimit[scenario].da, da + 30) +
+                    Math.min(statLimit[scenario].vi, vi + 30)
+                  }`}
+                </div>
+              )
+            })}
+          </div>
+        ))}
       </main>
     </div>
   )
