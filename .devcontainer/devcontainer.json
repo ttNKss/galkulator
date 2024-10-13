@@ -13,7 +13,8 @@
         "streetsidesoftware.code-spell-checker",
         "shardulm94.trailing-spaces",
         // ops
-        "GitHub.vscode-pull-request-github"
+        "GitHub.vscode-pull-request-github",
+        "github.vscode-github-actions"
       ]
     }
   },
