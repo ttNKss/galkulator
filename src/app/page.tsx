@@ -26,7 +26,7 @@ import {
 } from '@/utils/const'
 import { calc, pfloat, pint, sum } from '@/utils/func'
 import { ArrowUpIcon } from '@radix-ui/react-icons'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 export default function Home() {
   const [scenario, setScenario] = useState<Scenario>('master')
@@ -191,9 +191,18 @@ export default function Home() {
     })
   }
 
+  const finalResult = useMemo(
+    () => ({
+      Vo: Math.min(statLimit[scenario].Vo, (baseStats.Vo ?? 0) + 30),
+      Da: Math.min(statLimit[scenario].Da, (baseStats.Da ?? 0) + 30),
+      Vi: Math.min(statLimit[scenario].Vi, (baseStats.Vi ?? 0) + 30)
+    }),
+    [scenario, baseStats]
+  )
+
   return (
-    <div className='grid justify-items-center py-8 pb-20 px-8 sm:px-20 font-[family-name:var(--font-geist-sans)]'>
-      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start w-full max-w-5xl'>
+    <div className='grid justify-items-center py-8 pb-20 px-4 font-[family-name:var(--font-geist-sans)]'>
+      <main className='flex flex-col gap-8 row-start-2 items-center w-full max-w-5xl'>
         <div className='fixed top-0 left-0 right-0 z-50 px-4 bg-white'>
           <Accordion
             type='single'
@@ -312,11 +321,10 @@ export default function Home() {
           </Accordion>
         </div>
         <Tabs defaultValue='lessonAndDrive' className='w-full pt-8'>
-          <TabsList className='grid w-full grid-cols-2 mb-2'>
-            <TabsTrigger value='lessonAndDrive'>
-              レッスン + 追い込み
-            </TabsTrigger>
+          <TabsList className='grid grid-cols-3 w-full mb-2'>
+            <TabsTrigger value='lessonAndDrive'>レッスンあり</TabsTrigger>
             <TabsTrigger value='onlyDrive'>追い込みのみ</TabsTrigger>
+            <TabsTrigger value='finalExam'>最終試験</TabsTrigger>
           </TabsList>
           <TabsContent
             value='lessonAndDrive'
@@ -396,6 +404,29 @@ export default function Home() {
                   </Card>
                 )
               })}
+            </div>
+          </TabsContent>
+          <TabsContent
+            value='finalExam'
+            className='flex flex-col items-center gap-4 mt-0'
+          >
+            <div className='w-full max-w-md'>
+              <Card>
+                <CardHeader>
+                  <CardTitle>試験前のステータス</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <StatTable
+                    last={{
+                      Vo: baseStats.Vo ?? 0,
+                      Da: baseStats.Da ?? 0,
+                      Vi: baseStats.Vi ?? 0
+                    }}
+                    result={{ ...finalResult }}
+                  />
+                  <Score result={{ ...finalResult }} />
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
         </Tabs>
