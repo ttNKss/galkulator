@@ -26,7 +26,7 @@ import {
 } from '@/utils/const'
 import { calc, pfloat, pint, sum } from '@/utils/func'
 import { ArrowUpIcon } from '@radix-ui/react-icons'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 
 export default function Home() {
   const [scenario, setScenario] = useState<Scenario>('master')
@@ -45,6 +45,8 @@ export default function Home() {
     slot2: undefined,
     slot3: undefined
   })
+  const [accordionValue, setAccordionValue] = useState('item-1')
+  const accordionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -66,8 +68,20 @@ export default function Home() {
 
     window.addEventListener('hashchange', handleHashChange)
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        accordionRef.current &&
+        !accordionRef.current.contains(event.target as Node)
+      ) {
+        setAccordionValue('')
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
     return () => {
       window.removeEventListener('hashchange', handleHashChange)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
 
@@ -208,7 +222,9 @@ export default function Home() {
             type='single'
             collapsible
             className='w-full'
-            defaultValue='item-1'
+            value={accordionValue}
+            onValueChange={setAccordionValue}
+            ref={accordionRef}
           >
             <AccordionItem value='item-1'>
               <AccordionTrigger>ステータス情報入力</AccordionTrigger>
