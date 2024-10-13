@@ -60,7 +60,7 @@ export default function Home() {
             element.getBoundingClientRect().top + window.scrollY
           window.scrollTo({
             top: elementPosition - headerHeight - 12,
-            behavior: 'smooth'
+            behavior: 'instant'
           })
         }
       }
